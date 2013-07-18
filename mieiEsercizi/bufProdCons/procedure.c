@@ -15,7 +15,7 @@ void stampa_stato(int * ptr_stato){
 void stampa_buffer(msg * ptr_buf){
 	int i;
 	for(i=0;i<DIM;i++)
-		printf("Buffer[ %d ] = %d \n",i,ptr_buf[i]);
+		printf("Buffer[ %d ] = %ld \n",i,ptr_buf[i]);
 }
 
 void init_stato(int * stato){
@@ -57,6 +57,7 @@ int RichiestaC(int*stato,int sem, int mutex){
 
 msg Consumo(int indice,msg * buffer){
 	msg messaggio = buffer[indice];
+	buffer[indice] = 0;
 	return messaggio;
 }
 
@@ -110,7 +111,7 @@ void Consumatore(msg * ptr_sh,int * stato,int sem,int mutex){
 	int indice;
 	indice = RichiestaC(stato,sem,mutex);
 	val = Consumo(indice,ptr_sh);
-	printf("Messaggio letto: %d \n",val);
+	printf("Messaggio letto: %ld \n",val);
 	RilascioC(indice,stato,sem);	
 	/*printf("Faccio la wait su MSG_DISP pid= %d \n",getpid());
 	Wait_Sem(mutex,MSG_DISP);//wait messaggio disponibile
