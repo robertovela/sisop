@@ -25,11 +25,14 @@ int main(){
 	sem = semget(chiave_sem,2,IPC_CREAT|0664); //crea due sem con chiave_sem e permessi 664
 	mutex = semget(chiave_mut,2,IPC_CREAT|0664); //crea due mut con chiave_mut e permessi 664
 	
-	//controllare setup semafori!!!
-	semctl(mutex,MUTEXP,SETVAL,0); 
+	//mutex sulle variabili del produttore
+	semctl(mutex,MUTEXP,SETVAL,1); 
+	//mutex sulle variabili del consumatore
 	semctl(mutex,MUTEXC,SETVAL,1);
-	semctl(sem,PROD,SETVAL,0);
-	semctl(sem,CONS,SETVAL,1);
+	//PROD: spazio_disponibile	
+	semctl(sem,PROD,SETVAL,NUM_PROD);
+	//CONS: messaggio_disponibile
+	semctl(sem,CONS,SETVAL,0);
 	
 	pid = getpid();
 	printf("Pid processo padre: %d \n",pid);
@@ -40,12 +43,24 @@ int main(){
 			if((k%2) == 0){ //e' produttore
 	     			printf("k= %d sono il figlio produttore. Il mio pid %d \n",k,getpid());
        	     			sleep(1);
+				stampa_stato(ptr_stato);
+				stampa_buffer(ptr_buf);				
+				
 				Produttore(ptr_buf,ptr_stato,sem,mutex);
+
+				stampa_stato(ptr_stato);
+				stampa_buffer(ptr_buf);
 				printf("Sono uscito dalla produzione.\n");		
 			} else{
 				printf("k= %d sono il figlio consumatore. Il mio pid %d \n",k,getpid());
-       	     			sleep(2);				
-				Consumatore(ptr_buf,ptr_stato,sem,mutex);		
+       	     			sleep(2);
+				stampa_stato(ptr_stato);
+				stampa_buffer(ptr_buf);				
+				
+				Consumatore(ptr_buf,ptr_stato,sem,mutex);
+				
+				stampa_stato(ptr_stato);
+				stampa_buffer(ptr_buf);		
 				printf("Sono uscito dal consumo. \n");	
 			}
 			_exit(0);

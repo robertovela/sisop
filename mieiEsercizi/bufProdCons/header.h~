@@ -18,12 +18,15 @@
 #define MUTEXC 1
 #define PROD 0
 #define CONS 1
-#define DIM 4
-#define NUM_PROD 1
-#define NUM_CONS 1
+#define DIM 5
+#define NUM_PROD 2
+#define NUM_CONS 2
 
 typedef long msg;
 
+void stampa_stato(int * id_stato);
+void stampa_buffer(int * id_buf);
+int leggi_valore(int id_sem, int semaforo);
 void init_stato(int *); //imposta tutti gli elementi del buffer a VUOTO
 int RichiestaP (int*,int,int); //wait sui produttori, cerca l'indice del primo VUOTO e lo ritorna, setta stato=IN_USO
 void Produzione(int,msg,msg *); //scrive nel buffer
