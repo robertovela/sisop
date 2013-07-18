@@ -29,17 +29,14 @@ void Produttore(long * ptr_sh,int mutex){ //cosa cambia fra long* ptr e long *pt
 	printf("Ora lo spazio e' disp pid= %d \n",getpid());
 	*ptr_sh = val;//produzione
 	printf("Figlio %d ha prodotto %ld. Valore semaforo SPAZIO_DISP = %d \n",getpid(),*ptr_sh,semctl(mutex,SPAZIO_DISP,GETVAL));
-	printf("Faccio la signal su MSG_DISP pid= %d \n",getpid());
 	Signal_Sem(mutex,MSG_DISP);//signal messaggio disponibile
 }
 
 void Consumatore(long * ptr_sh,int mutex){
 	long mess;	
-	printf("Faccio la wait su MSG_DISP pid= %d \n",getpid());
 	Wait_Sem(mutex,MSG_DISP);//wait messaggio disponibile
 	mess = *ptr_sh;//consumo
 	*ptr_sh = 0;
 	printf("Figlio %d ha consumato %ld. Valore semaforo MSG_DISP = %d \n",getpid(),mess,semctl(mutex,MSG_DISP,GETVAL));
-	printf("Faccio la signal su SPAZIO_DISP pid= %d \n",getpid());
 	Signal_Sem(mutex,SPAZIO_DISP);//signal spazio disponibile
 }

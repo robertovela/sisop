@@ -25,12 +25,12 @@ int main(){
 		pid = fork();
 		if(pid == 0){ //e' figlio
 			if((k%2) == 0){ //e' produttore
-	     			printf("k= %d sono il figlio produttore. Il mio pid %d \n",k,getpid());
+	     			printf("sono il figlio produttore. Il mio pid %d \n",getpid());
        	     			sleep(1);
 				Produttore(ptr_sh,mutex);
 				printf("Sono uscito dalla produzione.\n");		
 			} else{
-				printf("k= %d sono il figlio consumatore. Il mio pid %d \n",k,getpid());
+				printf("sono il figlio consumatore. Il mio pid %d \n",getpid());
        	     			sleep(2);				
 				Consumatore(ptr_sh,mutex);		
 				printf("Sono uscito dal consumo. \n");	
