@@ -25,7 +25,7 @@ void init_monitor(Monitor *m,int num_var){
 	for(i=0;i<num_var;i++)
 		semctl(m->id_conds,i,SETVAL,0);
 	m->id_shared=shmget(IPC_PRIVATE,num_var*sizeof(int),IPC_CREAT|0664);
-	m->cond_counts=(int*) (shmat(M->id_shared,0,0));
+	m->cond_counts=(int*) (shmat(m->id_shared,0,0));
 	for(i=0;i<num_var;i++)
 		m->cond_counts[i]=0;
 	printf("Monitor inizializzao con %d condition variables! \n",num_var);
@@ -39,7 +39,7 @@ void enter_monitor(Monitor * m){
 }
 
 void leave_monitor(Monitor * m){
-	printf("<%d> Uscito nel monitor.\n",getpid());
+	printf("<%d> Uscito dal monitor.\n",getpid());
 	Signal_Sem(m->mutex,0);
 }
 
@@ -63,7 +63,7 @@ void wait_condition(Monitor * m,int id_var){
 
 
 void signal_condition(Monitor * m,int id_var){
-	 printf("<%d> -Monitor- tentativo di signal; n.ro proc. in attesa sulla cond. n. %d = %d\n", getpid(), id_var,M->cond_counts[id_var]);	
+	 printf("<%d> -Monitor- tentativo di signal; n.ro proc. in attesa sulla cond. n. %d = %d\n", getpid(), id_var,m->cond_counts[id_var]);	
 	if(m->cond_counts[id_var]>0){
 		printf("<%d> -Monitor- invocata la signal sulla condition numero %d\n", getpid(), id_var);
 		Signal_Sem(m->id_conds,id_var);
@@ -92,7 +92,7 @@ void Signal_Sem(int id_sem,int numsem){
 	semop(id_sem,&sem_buf,1);
 }
 
-void Queue_Sem(int id_sem,int numsem){
+int Queue_Sem(int id_sem,int numsem){
 	return (semctl(id_sem,numsem,GETNCNT,NULL));
 }
 

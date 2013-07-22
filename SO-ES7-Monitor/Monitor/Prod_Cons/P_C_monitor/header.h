@@ -4,7 +4,7 @@
 enum VAR_CONDITIONS {OK_PRODUZIONE, OK_CONSUMO};
 
 typedef long msg;
-
+	
 typedef struct {
 	int ok_produzione;
 	int ok_consumo;

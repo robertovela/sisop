@@ -1,5 +1,3 @@
-
-
 MNTLIB=../monitor/monitor.o
 all:  p_c_monitor
 

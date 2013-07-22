@@ -13,7 +13,7 @@ typedef struct {
 } Monitor;
 
 //monitor e numero di variabili condition
-void init_monitor (Monitor*, int); 
+void init_monitor (Monitor*, int); //arg: monitor e num variabili condition
 void enter_monitor(Monitor*);
 void leave_monitor(Monitor*);
 void remove_monitor(Monitor*);
